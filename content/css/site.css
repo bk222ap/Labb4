@@ -1,0 +1,30 @@
+body
+{
+	background-color: #000000;
+}
+
+#main
+{
+	width: 400px;
+	margin: 20px auto;
+	padding: 20px;
+	background-color: #ffffff;
+	color: #000000;
+}
+
+#main .row
+{
+	display: block;
+	margin: 5px 0 0 0;
+}
+
+#main .error
+{
+	color: #ff0000;
+	margin: 0 0 10px 0;
+}
+
+#main .success
+{
+	color: darkgreen;
+}
