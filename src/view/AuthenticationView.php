@@ -418,6 +418,9 @@ class AuthenticationView extends HTMLView
        //{
        //     $body .= '<p class="success">' . $successMessage . '</p>';
        // }
+       $body .='<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">
+                    <fieldset>
+                        <legend>Logga in:</legend>' . "\n";
                 
         $body .='<span class="row">
                     <label for="' . self::$NameUsername . '">Användarnamn: </label>
@@ -437,7 +440,8 @@ class AuthenticationView extends HTMLView
                  </span>
                  <span class="row">
                     <input type="submit" name="' . self::$NameRegisterMeButton . '" value="Registrera Mig" />
-                 </span>' . "\n";
+                 </span>
+               </form>' . "\n";
                 
         return $body;
     }
