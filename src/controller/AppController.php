@@ -45,11 +45,13 @@ class AppController
             }
             else if($view->userPressedRegister())
             {
-               
                 $view->createHTML();
-                $view->echoHTML(); 
-                 $controller->doRegister();
-                               
+                $view->echoHTML();                            
+            }
+			 else if($view->userPressedRegisterMe())
+            {
+   
+                  $controller->doRegister();                       
             }
 		}
 		else

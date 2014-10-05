@@ -299,6 +299,16 @@ class AuthenticationView extends HTMLView
     {
         return isset($_POST[self::$NameRegisterButton]);
     }
+	
+	  /**
+     * Checks if user clicked registerMe button
+     * 
+     * @return boolean  TRUE if user clicked register button
+     */
+    public function userPressedRegisterMe()
+    {
+        return isset($_POST[self::$NameRegisterMeButton]);
+    }
 
     /**
      * Checks if userclicked logout button
@@ -406,18 +416,23 @@ class AuthenticationView extends HTMLView
     
 	 private function createRegisterBody()
     {
-        //$errorMessage = $this->getErrorMessage();
-        //$successMessage = $this->getSuccessMessage();
+       $errorMessage = $this->getErrorMessage();
+       $successMessage = $this->getSuccessMessage();
 
         $body = '
             <div id="main">
-                <h1>Laboration 2 - ba222ec</h1>
+                <h1>Laboration 4 - bk222ap</h1>
                 <h2>Registrera en ny användare</h2>' . "\n";
         
-       // if ($successMessage != '')
-       //{
-       //     $body .= '<p class="success">' . $successMessage . '</p>';
-       // }
+       if ($successMessage != '')
+       {
+            $body .= '<p class="success">' . $successMessage . '</p>';
+        }
+
+		$body .='<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">
+		                    <fieldset>
+		                        <legend>Logga in:</legend>' . "\n";
+
                 
         $body .='<span class="row">
                     <label for="' . self::$NameUsername . '">Användarnamn: </label>
@@ -429,15 +444,14 @@ class AuthenticationView extends HTMLView
                       <input id="' . self::$NamePassword . '" name="' . self::$RegisterPassword . '" type="password" />
                  </span>
                  
-				 // FIXA!!!!!!!!
-				 
                   <span class="row">
                       <label for="' . self::$NamePassword . '">Repetera Lösenordet: </label>
                       <input id="' . self::$NamePassword . '" name="' . self::$RepeatPassword . '" type="password" />
                  </span>
                  <span class="row">
                     <input type="submit" name="' . self::$NameRegisterMeButton . '" value="Registrera Mig" />
-                 </span>' . "\n";
+                 </span>
+                  </form>' . "\n";
                 
         return $body;
     }

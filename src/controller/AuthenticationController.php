@@ -80,12 +80,12 @@ class AuthenticationController
 
     public function doRegister()
     {
+    	
             $inputRegisterUsername = $this->view->getRegisterUsername();
             $inputRegisterPassword = $this->view->getRegisterPassword();
             $inputRepeatPassword = $this->view->getRepeatPassword();
         try
         {
-        
             $this->model->registerUser($inputRegisterUsername,
                                          $inputRegisterPassword,
                                          $inputRepeatPassword);
