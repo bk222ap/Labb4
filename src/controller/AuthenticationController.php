@@ -77,6 +77,31 @@ class AuthenticationController
 
         $this->view->redirect($_SERVER['PHP_SELF']);
 	}
+
+    public function doRegister()
+    {
+            $inputRegisterUsername = $this->view->getRegisterUsername();
+            $inputRegisterPassword = $this->view->getRegisterPassword();
+            $inputRepeatPassword = $this->view->getRepeatPassword();
+        try
+        {
+        
+            $this->model->registerUser($inputRegisterUsername,
+                                         $inputRegisterPassword,
+                                         $inputRepeatPassword);
+            $this->view->addSuccessMessage('registering lyckades'); 
+        }
+        catch(UsernameAlreadyExistException $e)
+        {
+            $this->view->addErrorMessage('Fel');
+        }
+        catch(\Exception $e)
+        {
+            $this->view->addErrorMessage('hurrdurr fel i AuthenticationController');
+        }
+
+        $this->view->redirect($_SERVER['PHP_SELF']);
+    }
 	
     /**
      * Authenticate a user woth saved credentials

@@ -43,6 +43,14 @@ class AppController
             {
                 $controller->doLogout();
             }
+            else if($view->userPressedRegister())
+            {
+               
+                $view->createHTML();
+                $view->echoHTML(); 
+                 $controller->doRegister();
+                               
+            }
 		}
 		else
 		{

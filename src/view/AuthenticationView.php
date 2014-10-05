@@ -32,11 +32,26 @@ class AuthenticationView extends HTMLView
      * @var string $NamePassword        The name attribute of the password input
      */
     private static $NamePassword = 'password';
+
+     /**
+     * @var string $RegisterPassword        The name attribute of the password input
+     */
+    private static $RegisterPassword = 'registerPassword';
     
+     /**
+     * @var string $RepeatPassword        The name attribute of the password input
+     */
+    private static $RepeatPassword = 'repeatPassword';
+
     /**
      * @var string $NameUsername        The name attribute of the username input
      */
     private static $NameUsername = 'username';
+    
+    /**
+     * @var string $RegisterUsername        The name attribute of the username input
+     */
+    private static $RegisterUsername = 'registerUsername';
     
     /**
      * @var string $NameSaveCredentials The name attribute of the save credential checkbox
@@ -134,6 +149,10 @@ class AuthenticationView extends HTMLView
             $title .= $this->model->getUser()->getUsername() . ' är inloggad';
             $body .= $this->createAuthenticatedBody();
         }
+        else if($this->userPressedRegister()){
+            $title .= "Register";
+            $body .= $this->createRegisterBody();
+        }
         else
         {
             $title .= 'Ej inloggad';
@@ -164,7 +183,33 @@ class AuthenticationView extends HTMLView
      */
     public function getPassword()
     {
+
         return $_POST[self::$NamePassword];
+    }
+
+
+    /**
+     * Getter for inputfield for Register Password
+     * 
+     * @return string   The user submitted Register Password
+     */
+    public function getRegisterPassword()
+    {
+        
+            return $_POST[self::$RegisterPassword];
+                
+    }
+
+    /**
+     * Getter for inputfield for Repeat Password
+     * 
+     * @return string   The user submitted reapeated Password
+     */
+    public function getRepeatPassword()
+    {
+       
+            return $_POST[self::$RepeatPassword];
+        
     }
 
     /**
@@ -187,6 +232,18 @@ class AuthenticationView extends HTMLView
     public function getUsername()
     {
         return $_POST[self::$NameUsername];
+    }
+
+    /**
+     * Getter for inputfield for RegisterUsername
+     * 
+     * @return string   The user submitted RegisterUsername
+     */
+    public function getRegisterUsername()
+    {
+        
+            return $_POST[self::$RegisterUsername];
+        
     }
 
     /**
@@ -234,23 +291,13 @@ class AuthenticationView extends HTMLView
     }
 	
 	   /**
-     * Checks if user clicked login button
+     * Checks if user clicked register button
      * 
      * @return boolean  TRUE if user clicked register button
      */
     public function userPressedRegister()
     {
         return isset($_POST[self::$NameRegisterButton]);
-    }
-	
-	   /**
-     * Checks if user clicked login button
-     * 
-     * @return boolean  TRUE if user clicked register me button
-     */
-    public function userPressedRegister()
-    {
-        return isset($_POST[self::$NameRegisterMeButton]);
     }
 
     /**
@@ -359,8 +406,8 @@ class AuthenticationView extends HTMLView
     
 	 private function createRegisterBody()
     {
-        $errorMessage = $this->getErrorMessage();
-        $successMessage = $this->getSuccessMessage();
+        //$errorMessage = $this->getErrorMessage();
+        //$successMessage = $this->getSuccessMessage();
 
         $body = '
             <div id="main">
@@ -374,19 +421,19 @@ class AuthenticationView extends HTMLView
                 
         $body .='<span class="row">
                     <label for="' . self::$NameUsername . '">Användarnamn: </label>
-                    <input id="' . self::$NameUsername . '" name="' . self::$NameUsername . 
+                    <input id="' . self::$NameUsername . '" name="' . self::$RegisterUsername . 
                        '" />
                  </span>
                  <span class="row">
                       <label for="' . self::$NamePassword . '">Lösenord: </label>
-                      <input id="' . self::$NamePassword . '" name="' . self::$NamePassword . '" type="password" />
+                      <input id="' . self::$NamePassword . '" name="' . self::$RegisterPassword . '" type="password" />
                  </span>
                  
 				 // FIXA!!!!!!!!
 				 
                   <span class="row">
                       <label for="' . self::$NamePassword . '">Repetera Lösenordet: </label>
-                      <input id="' . self::$NamePassword . '" name="' . self::$NamePassword . '" type="password" />
+                      <input id="' . self::$NamePassword . '" name="' . self::$RepeatPassword . '" type="password" />
                  </span>
                  <span class="row">
                     <input type="submit" name="' . self::$NameRegisterMeButton . '" value="Registrera Mig" />

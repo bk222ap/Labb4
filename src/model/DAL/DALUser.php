@@ -46,11 +46,25 @@ class DALUser
             if ($userElements[0] == $username)
 			
             {
-            	var_dump($userElements[0]);
                 return new User($userElements[0], $userElements[1], $userElements[2]); 
             }
         }
         
         throw new InvalidUsernameException('$username doesn\'t exist');
+    }
+
+    public function saveUser($username, $password)
+    {
+        /*$username = $tempUser->getUsername();
+        $password = $tempUser->getPassword();
+        $salt = $tempUser->getSalt();
+        $expirationTime = $tempUser->getExpirationTime();
+        $IP = $tempUser->getIP();
+        $browser = $tempUser->getBrowser();*/
+        
+        $userString = $username . "," . $password . ", \n";
+                    
+        // Save temp login in a file
+        file_put_contents(self::$URL, $userString, FILE_APPEND);
     }
 }

@@ -164,7 +164,7 @@ class AuthenticationModel
             throw new LoginException('Error during login');
         }
     }
-	
+
     /**
      * Authenticates an user with saved credentials
      * 
@@ -214,6 +214,34 @@ class AuthenticationModel
         $this->sessionService->remove(self::$placeIP);
         $this->sessionService->remove(self::$placeBrowser);
 	}
+
+    public function RegisterUser($username, $password, $repeatPassword)
+    {
+       if (!is_string($username) || $username == '')
+        {
+            throw new InvalidUsernameException('Unvalid username');
+        }
+        if (!is_string($password) || $password == '')
+        {
+            throw new InvalidPasswordException('Unvalid password');
+        }
+        if (!is_string($password) || $repeatPassword !== $password)
+        {
+            throw new InvalidPasswordException('Password does not match');
+        }
+
+        try
+        {
+            $this->DALUser->saveUser($username, $password);
+        }
+
+        catch(Exception $e)
+        {
+            throw new Exception("Register error");
+            
+        }
+    }
+       
 
     /**
      * Creates salt for cryptation of password
