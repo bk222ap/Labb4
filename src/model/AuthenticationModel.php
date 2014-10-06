@@ -135,7 +135,7 @@ class AuthenticationModel
         try
         {
 	        $user = $this->DALUser->getUserByUsername($username);
-            
+
             if ($user->getPassword() == crypt($password, $user->getSalt()))
             {
                if ($saveCredentials)
@@ -217,6 +217,7 @@ class AuthenticationModel
 
     public function RegisterUser($username, $password, $repeatPassword)
     {
+        $pattern ='@<([a-z]+)[^>]*(?<!/)>@';
        if (!is_string($username) || $username == '')
         {
             throw new InvalidUsernameException('Unvalid username');
@@ -230,9 +231,32 @@ class AuthenticationModel
             throw new InvalidPasswordException('Password does not match');
         }
 
+        if( preg_match($pattern, $username))
+        {
+            throw new HackException("uuh u filty hacker...desu");   
+        }
+        if (strlen($password) < 5) 
+        {
+            throw new RegisterException('Password to short. Should be atleast 6 latters long');
+        }
+        if (strlen($username) < 3) 
+        {
+            throw new RegisterException('Username to short, Should at least 3 latters long');
+        }
+        try{
+            $this->DALUser->getUserByUsername($username);
+            throw new RegisterException('Username exist');
+        }
+        catch(Exception $e)
+        {
+           //eat
+            
+        }
         try
         {
-            $this->DALUser->saveUser($username, $password);
+            $salt = $this->createSalt();
+            $cryptPass = crypt($password, $salt);
+            $this->DALUser->saveUser($username, crypt($password, $salt), $salt);
         }
 
         catch(Exception $e)

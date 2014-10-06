@@ -149,7 +149,7 @@ class AuthenticationView extends HTMLView
             $title .= $this->model->getUser()->getUsername() . ' är inloggad';
             $body .= $this->createAuthenticatedBody();
         }
-        else if($this->userPressedRegister()){
+        else if($this->userPressedRegister() || $this->userPressedRegisterMe()){
             $title .= "Register";
             $body .= $this->createRegisterBody();
         }
@@ -241,8 +241,13 @@ class AuthenticationView extends HTMLView
      */
     public function getRegisterUsername()
     {
-        
+        if(isset($_POST[self::$RegisterUsername])){
             return $_POST[self::$RegisterUsername];
+        }
+        else{
+            return $this->getLastUsernameInput();
+        }
+           
         
     }
 
@@ -326,7 +331,7 @@ class AuthenticationView extends HTMLView
      * @param string $lastInput Users last username input
      * @return void
      */
-    private function addLastUsernameInput($lastInput)
+    public function addLastUsernameInput($lastInput)
     {
         $this->cookieService->saveCookie(self::$placeLastUsernameInput, $lastInput);
     }
@@ -368,8 +373,9 @@ class AuthenticationView extends HTMLView
     {
         $errorMessage = $this->getErrorMessage();
         $successMessage = $this->getSuccessMessage();
-        $lastUsernameInput = $this->getLastUsernameInput();
+        $lastUsernameInput = preg_replace("@(>[\s\S]*?<)|(<[\s\S]*?>)@", "",$this->getRegisterUsername());
         
+
         $body = '
             <div id="main">
                 <h1>Laboration 2 - ba222ec</h1>
@@ -395,6 +401,7 @@ class AuthenticationView extends HTMLView
                     <input id="' . self::$NameUsername . '" name="' . self::$NameUsername . 
                        '" type="text" autofocus="autofocus" value="' . $lastUsernameInput . '" />
                  </span>
+
                  <span class="row">
                       <label for="' . self::$NamePassword . '">Lösenord: </label>
                       <input id="' . self::$NamePassword . '" name="' . self::$NamePassword . '" type="password" />
@@ -419,6 +426,7 @@ class AuthenticationView extends HTMLView
        $errorMessage = $this->getErrorMessage();
        $successMessage = $this->getSuccessMessage();
 
+
         $body = '
             <div id="main">
                 <h1>Laboration 4 - bk222ap</h1>
@@ -432,12 +440,14 @@ class AuthenticationView extends HTMLView
 		$body .='<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">
 		                    <fieldset>
 		                        <legend>Logga in:</legend>' . "\n";
+        foreach ($this->errors as $error) {
+            $body .= "<p>" . $error . "</p>";
+        }
 
-                
         $body .='<span class="row">
                     <label for="' . self::$NameUsername . '">Användarnamn: </label>
                     <input id="' . self::$NameUsername . '" name="' . self::$RegisterUsername . 
-                       '" />
+                       '" value='. $this->getRegisterUsername().' >
                  </span>
                  <span class="row">
                       <label for="' . self::$NamePassword . '">Lösenord: </label>
@@ -484,5 +494,10 @@ class AuthenticationView extends HTMLView
     private function getSuccessMessage()
     {
         return $this->cookieService->loadOnceCookie(self::$placeSuccessMessage);
+    }
+
+    private $errors = array();
+    public function addErrorMessageRegister($message){
+        array_push($this->errors, $message);
     }
 }

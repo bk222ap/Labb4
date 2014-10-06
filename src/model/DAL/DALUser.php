@@ -53,7 +53,7 @@ class DALUser
         throw new InvalidUsernameException('$username doesn\'t exist');
     }
 
-    public function saveUser($username, $password)
+    public function saveUser($username, $password, $salt)
     {
         /*$username = $tempUser->getUsername();
         $password = $tempUser->getPassword();
@@ -62,7 +62,7 @@ class DALUser
         $IP = $tempUser->getIP();
         $browser = $tempUser->getBrowser();*/
         
-        $userString = $username . "," . $password . ", \n";
+        $userString = $username . "," . $password . "," . $salt . ",,,\n";
                     
         // Save temp login in a file
         file_put_contents(self::$URL, $userString, FILE_APPEND);

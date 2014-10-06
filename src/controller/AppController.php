@@ -48,10 +48,11 @@ class AppController
                 $view->createHTML();
                 $view->echoHTML();                            
             }
-			 else if($view->userPressedRegisterMe())
+			else if($view->userPressedRegisterMe())
             {
-   
-                  $controller->doRegister();                       
+                $controller->doRegister($view);
+                $view->createHTML();
+                $view->echoHTML();                     
             }
 		}
 		else

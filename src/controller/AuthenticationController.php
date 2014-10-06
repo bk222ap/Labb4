@@ -78,8 +78,9 @@ class AuthenticationController
         $this->view->redirect($_SERVER['PHP_SELF']);
 	}
 
-    public function doRegister()
+    public function doRegister($view)
     {
+        $error  =false;
     	
             $inputRegisterUsername = $this->view->getRegisterUsername();
             $inputRegisterPassword = $this->view->getRegisterPassword();
@@ -93,14 +94,39 @@ class AuthenticationController
         }
         catch(UsernameAlreadyExistException $e)
         {
-            $this->view->addErrorMessage('Fel');
+            $view->addErrorMessageRegister($e->getMessage());
+             $error = true;
+        }
+        catch(InvalidUsernameException $e){
+            $view->addErrorMessageRegister($e->getMessage());
+            $error = true;
+        }
+         catch(InvalidPasswordException $e){
+            $view->addErrorMessageRegister($e->getMessage());
+            $error = true;
+        }
+         catch(InvalidPasswordException $e){
+            $view->addErrorMessageRegister($e->getMessage());
+            $error = true;
+        }
+         catch(HackException $e){
+            $view->addErrorMessageRegister($e->getMessage());
+            $error = true;
+        }
+         catch(RegisterException $e){
+            $view->addErrorMessageRegister($e->getMessage());
+            $error = true;
         }
         catch(\Exception $e)
         {
-            $this->view->addErrorMessage('hurrdurr fel i AuthenticationController');
+            $view->addErrorMessageRegister('hurrdurr fel i AuthenticationController');
+            $error = true;
         }
-
-        $this->view->redirect($_SERVER['PHP_SELF']);
+        $this->view->addLastUsernameInput($inputUsername);
+        if(!$error){
+            $this->view->redirect($_SERVER['PHP_SELF']);
+        }
+        
     }
 	
     /**
