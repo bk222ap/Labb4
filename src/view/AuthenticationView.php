@@ -423,8 +423,8 @@ class AuthenticationView extends HTMLView
     
 	 private function createRegisterBody()
     {
-       $errorMessage = $this->getErrorMessage();
-       $successMessage = $this->getSuccessMessage();
+        $errorMessage = $this->getErrorMessage();
+        $successMessage = $this->getSuccessMessage();
 
 
         $body = '
@@ -440,8 +440,13 @@ class AuthenticationView extends HTMLView
 		$body .='<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">
 		                    <fieldset>
 		                        <legend>Logga in:</legend>' . "\n";
-        foreach ($this->errors as $error) {
+        /*foreach ($this->errors as $error) {
             $body .= "<p>" . $error . "</p>";
+        }*/
+        
+          if ($errorMessage != '')
+        {
+            $body .= '<p class="error">' . $errorMessage . '</p>' . "\n";
         }
 
         $body .='<span class="row">

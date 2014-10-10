@@ -94,27 +94,40 @@ class AuthenticationController
         }
         catch(UsernameAlreadyExistException $e)
         {
-            $view->addErrorMessageRegister($e->getMessage());
+         $this->view->addErrorMessage('Användarnamnet existerar redan');
              $error = true;
         }
         catch(InvalidUsernameException $e){
-            $view->addErrorMessageRegister($e->getMessage());
+            $this->view->addErrorMessage('Ogiltigt Användarnamn');
             $error = true;
         }
          catch(InvalidPasswordException $e){
-            $view->addErrorMessageRegister($e->getMessage());
+            $ $this->view->addErrorMessage('Ogiltigt Lösenord');
             $error = true;
         }
-         catch(InvalidPasswordException $e){
-            $view->addErrorMessageRegister($e->getMessage());
-            $error = true;
-        }
+       
          catch(HackException $e){
-            $view->addErrorMessageRegister($e->getMessage());
+             $this->view->addErrorMessage('Ogiltiga Täcken I Input');
             $error = true;
         }
+		 
+		 catch(NotMatchingPasswordException $e){
+             $this->view->addErrorMessage('Lösenordet matchar inte');
+            $error = true;
+        }
+		 
+		 catch(TooShortUsernameException $e){
+             $this->view->addErrorMessage('För kort användarnam. minst 3 Täcken!');
+            $error = true;
+        }
+		 
+		 catch(TooShortPasswordException $e){
+             $this->view->addErrorMessage('Lösenordet för kort. Minst 6 Täcken!');
+            $error = true;
+        }
+		 
          catch(RegisterException $e){
-            $view->addErrorMessageRegister($e->getMessage());
+             $this->view->addErrorMessage('Ett Fel uppstod med registreringen');
             $error = true;
         }
         catch(\Exception $e)

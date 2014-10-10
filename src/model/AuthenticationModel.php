@@ -220,37 +220,37 @@ class AuthenticationModel
         $pattern ='@<([a-z]+)[^>]*(?<!/)>@';
        if (!is_string($username) || $username == '')
         {
-            throw new InvalidUsernameException('Unvalid username');
+            throw new \InvalidUsernameException('Unvalid username');
         }
         if (!is_string($password) || $password == '')
         {
-            throw new InvalidPasswordException('Unvalid password');
+            throw new \InvalidPasswordException('Unvalid password');
         }
         if (!is_string($password) || $repeatPassword !== $password)
         {
-            throw new InvalidPasswordException('Password does not match');
+            throw new \NotMatchingPasswordException('Password does not match');
         }
 
         if( preg_match($pattern, $username))
         {
-            throw new HackException("uuh u filty hacker...desu");   
+            throw new \HackException("uuh u filty hacker...desu");   
         }
         if (strlen($password) < 5) 
         {
-            throw new RegisterException('Password to short. Should be atleast 6 latters long');
+            throw new \TooShortPasswordException('Password to short. Should be atleast 6 latters long');
         }
         if (strlen($username) < 3) 
         {
-            throw new RegisterException('Username to short, Should at least 3 latters long');
+            throw new \TooShortUsernameException('Username to short, Should at least 3 latters long');
         }
-        try{
+        try
+        {
             $this->DALUser->getUserByUsername($username);
-            throw new RegisterException('Username exist');
+            throw new \UsernameAlreadyExistException('Username exist');
         }
         catch(Exception $e)
         {
-           //eat
-            
+                  
         }
         try
         {
@@ -259,9 +259,9 @@ class AuthenticationModel
             $this->DALUser->saveUser($username, crypt($password, $salt), $salt);
         }
 
-        catch(Exception $e)
+        catch(RegisterException $e)
         {
-            throw new Exception("Register error");
+            throw new RegisterException("Register error");
             
         }
     }
