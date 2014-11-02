@@ -48,6 +48,10 @@ class AppController
                 $view->createHTML();
                 $view->echoHTML();                            
             }
+			else if($view->userPressedBack())
+			{
+				$view->redirect($_SERVER['PHP_SELF']);
+			}
 			else if($view->userPressedRegisterMe())
             {
                 $controller->doRegister($view);

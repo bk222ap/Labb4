@@ -94,40 +94,40 @@ class AuthenticationController
         }
         catch(UsernameAlreadyExistException $e)
         {
-         $this->view->addErrorMessage('Användarnamnet existerar redan');
+         $this->view->addErrorMessageRegister('Användarnamnet existerar redan');
              $error = true;
         }
         catch(InvalidUsernameException $e){
-            $this->view->addErrorMessage('Ogiltigt Användarnamn');
+            $this->view->addErrorMessageRegister('Ogiltigt Användarnamn');
             $error = true;
         }
          catch(InvalidPasswordException $e){
-            $ $this->view->addErrorMessage('Ogiltigt Lösenord');
+            $ $this->view->addErrorMessageRegister('Ogiltigt Lösenord');
             $error = true;
         }
        
          catch(HackException $e){
-             $this->view->addErrorMessage('Ogiltiga Täcken I Input');
+             $this->view->addErrorMessageRegister('Ogiltiga Täcken I Input');
             $error = true;
         }
 		 
 		 catch(NotMatchingPasswordException $e){
-             $this->view->addErrorMessage('Lösenordet matchar inte');
+             $this->view->addErrorMessageRegister('Lösenordet matchar inte');
             $error = true;
         }
 		 
 		 catch(TooShortUsernameException $e){
-             $this->view->addErrorMessage('För kort användarnam. minst 3 Täcken!');
+             $this->view->addErrorMessageRegister('För kort användarnam. minst 3 Täcken!');
             $error = true;
         }
 		 
 		 catch(TooShortPasswordException $e){
-             $this->view->addErrorMessage('Lösenordet för kort. Minst 6 Täcken!');
+             $this->view->addErrorMessageRegister('Lösenordet för kort. Minst 6 Täcken!');
             $error = true;
         }
 		 
          catch(RegisterException $e){
-             $this->view->addErrorMessage('Ett Fel uppstod med registreringen');
+             $this->view->addErrorMessageRegister('Ett Fel uppstod med registreringen');
             $error = true;
         }
         catch(\Exception $e)
@@ -135,7 +135,7 @@ class AuthenticationController
             $view->addErrorMessageRegister('hurrdurr fel i AuthenticationController');
             $error = true;
         }
-        $this->view->addLastUsernameInput($inputUsername);
+        $this->view->addLastUsernameInput($inputRegisterUsername);
         if(!$error){
             $this->view->redirect($_SERVER['PHP_SELF']);
         }

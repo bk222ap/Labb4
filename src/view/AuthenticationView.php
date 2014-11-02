@@ -18,6 +18,11 @@ class AuthenticationView extends HTMLView
      */
     private static $NameRegisterButton = 'register';
 	
+	/**
+     * @var array $errors     Store Register Errors
+     */
+	private static $errors = array();
+	
 	  /**
      * @var string $NameRegisterMeButton    The name attribute of the register Me button
      */
@@ -62,6 +67,8 @@ class AuthenticationView extends HTMLView
      * @var string $placeErrorMessage   The cookie name for error message
      */
     private static $placeErrorMessage = 'AuthenticationView::ErrorMessage';
+	
+	Private static $NameBackButton = 'back';
     
     /**
      * @var string $placeLastUsernameInput The cookie name for last username input
@@ -314,6 +321,10 @@ class AuthenticationView extends HTMLView
     {
         return isset($_POST[self::$NameRegisterMeButton]);
     }
+	public function userPressedBack()
+    {
+        return isset($_POST[self::$NameBackButton]);
+    }
 
     /**
      * Checks if userclicked logout button
@@ -432,9 +443,8 @@ class AuthenticationView extends HTMLView
                 <h1>Laboration 4 - bk222ap</h1>
                 <h2>Registrera en ny användare</h2>' . "\n";
         
-       if ($successMessage != '')
-       {
-            $body .= '<p class="success">' . $successMessage . '</p>';
+        foreach (self::$errors as $error) {
+            $body .= "<p class='error'>" . $error . "</p><br>";
         }
 
 		$body .='<form method="POST" action="' . $_SERVER['PHP_SELF'] . '">
@@ -465,6 +475,7 @@ class AuthenticationView extends HTMLView
                  </span>
                  <span class="row">
                     <input type="submit" name="' . self::$NameRegisterMeButton . '" value="Registrera Mig" />
+                     <input type="submit" name="' . self::$NameBackButton . '" value="Gå Tillbaka" />
                  </span>
                   </form>' . "\n";
                 
@@ -501,8 +512,7 @@ class AuthenticationView extends HTMLView
         return $this->cookieService->loadOnceCookie(self::$placeSuccessMessage);
     }
 
-    private $errors = array();
-    public function addErrorMessageRegister($message){
-        array_push($this->errors, $message);
+ 	public function addErrorMessageRegister($message){
+        array_push(self::$errors, $message);
     }
 }
